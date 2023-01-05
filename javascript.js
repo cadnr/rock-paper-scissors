@@ -1,3 +1,5 @@
+game();
+
 function getComputerChoice() {
     let rand;
     rand = Math.floor(Math.random() * 3)
@@ -52,4 +54,30 @@ function playRound() {
                 return "Computer wins!"
             }
         }
+}
+
+function game() {
+    let scoreComputer, scorePlayer;
+    scoreComputer = 0;
+    scorePlayer = 0;
+
+    for(let i = 0; i < 5; i++) {
+        let result;
+        console.log("Current score: computer -", scoreComputer, 'player - ', scorePlayer);
+        result = playRound();
+        if (result == 'Player wins!') {
+            scorePlayer++
+        } else if(result == 'Computer wins!') {
+            scoreComputer++
+        }
+        console.log(result);
+    }
+    console.log("Final score: computer -", scoreComputer, 'player - ', scorePlayer);
+    if(scoreComputer > scorePlayer){
+        console.log('Final result: Computer wins the game!')
+    } else if(scoreComputer < scorePlayer){
+        console.log('Final result: Player wins the game!')
+    } else {
+        console.log('Final result: A tie!')
+    }
 }
