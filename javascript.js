@@ -1,4 +1,22 @@
-game();
+const messages = document.querySelector('.messages');
+const score = document.querySelector('.score');
+const selections = document.querySelector('.selections');
+
+let scoreComputer, scorePlayer;
+scoreComputer = 0;
+scorePlayer = 0;
+
+buttons = document.querySelectorAll('button');
+buttons.forEach(button => button.addEventListener('click', function(){
+    game(button.textContent);
+}));
+
+function modifyTextDOM(target, text) {
+    const newChild = document.createElement('p');
+    newChild.textContent = text;
+    const oldChild = target.querySelector('p');
+    target.replaceChild(newChild, oldChild);
+}
 
 function getComputerChoice() {
     let rand;
@@ -10,20 +28,21 @@ function getComputerChoice() {
     }
 }
 
-function getPlayerChoice() {
+function getPlayerChoice(buttonText) {
     while(true) {
-        input = prompt("Choose rock, paper or scissors").toLowerCase();
+        input = buttonText.toLowerCase();
         if(input == 'rock' || input == 'paper' || input == 'scissors') return input;
     }
 }
 
-function playRound() {
+function playRound(buttonText) {
     let computerChoice, playerChoice;
 
     computerChoice = getComputerChoice();
-    playerChoice = getPlayerChoice();
+    playerChoice = getPlayerChoice(buttonText);
 
-    console.log(computerChoice, playerChoice);
+    modifyTextDOM(selections, `Computer: ${computerChoice}, 
+        player: ${playerChoice}`);
 
     if(computerChoice == 'rock') {
         if(playerChoice == 'rock') {
@@ -56,28 +75,29 @@ function playRound() {
         }
 }
 
-function game() {
-    let scoreComputer, scorePlayer;
-    scoreComputer = 0;
-    scorePlayer = 0;
+function game(buttonText) {
 
-    for(let i = 0; i < 5; i++) {
         let result;
-        console.log("Current score: computer -", scoreComputer, 'player - ', scorePlayer);
-        result = playRound();
+        result = playRound(buttonText);
         if (result == 'Player wins!') {
             scorePlayer++
         } else if(result == 'Computer wins!') {
             scoreComputer++
         }
-        console.log(result);
-    }
-    console.log("Final score: computer -", scoreComputer, 'player - ', scorePlayer);
-    if(scoreComputer > scorePlayer){
-        console.log('Final result: Computer wins the game!')
-    } else if(scoreComputer < scorePlayer){
-        console.log('Final result: Player wins the game!')
-    } else {
-        console.log('Final result: A tie!')
+        modifyTextDOM(score, `Current score: computer - ${scoreComputer}, player - ${scorePlayer}`);
+        modifyTextDOM(messages, result);
+     
+    if (scoreComputer >= 5 || scorePlayer >= 5){
+        modifyTextDOM(score, `Final score: computer - ${scoreComputer}, player - ${scorePlayer}`);
+
+        if(scoreComputer > scorePlayer){
+            modifyTextDOM(messages, 'Final result: Computer wins the game!')
+        } else if(scoreComputer < scorePlayer){
+            modifyTextDOM(messages , 'Final result: Player wins the game!')
+        } else {
+            modifyTextDOM(messages, 'Final result: A tie!')
+        }
+        scoreComputer = 0;
+        scorePlayer = 0;
     }
 }
